@@ -31,11 +31,17 @@ class Chessboard(Widget):
 
     def square_pos(self,x,y):
         square_size = self.width/8
-        return (math.trunc(y/square_size)+1,math.trunc(x/square_size)+1)
+        return (math.trunc(y/square_size),math.trunc(x/square_size))
 
     def legal_move(self, down, up):
         if up[0] != 0:
             print(down, up)
+
+class Pawn(Widget):
+    position_row = NumericProperty(5)
+    position_col = NumericProperty(6)
+    p_size = NumericProperty(0)
+    pass
 
 class ChessApp(App):
     def build(self):
