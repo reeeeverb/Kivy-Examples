@@ -2,13 +2,18 @@
 #:import win kivy.core.window
 
 <ChessGame>:    
+    pawn_1 : pawn
+    pawn_2 : pawn2
     s_width : win.Window.width
     s_height : win.Window.height
     Chessboard:
         id: main_board
         center: self.parent.center
         Pawn:
-            id: pawn_1
+            id: pawn
+            white: 0
+        Pawn:
+            id: pawn2
 
 <Chessboard>:
     size : self.parent.s_height, self.parent.s_height
@@ -25,5 +30,5 @@
         Rectangle:
             pos: self.position_row*.125*self.parent.width+self.parent.x, self.position_col*.125*self.parent.height+self.parent.y
             size: self.p_size, self.p_size
-            source: 'chess-pieces/white/pawn.png'
+            source: 'chess-pieces/white/pawn.png' if self.white == 1 else 'chess-pieces/black/pawn1.png'
     
