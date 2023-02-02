@@ -18,7 +18,7 @@ class Chessboard(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.down_square = (0,0)
-        self.color, self.piece = ["EMPTY"]*64, ["EMPTY"]*64
+        self.names, self.color, self.piece = ["EMPTY"]*64, ["EMPTY"]*64, ["EMPTY"]*64
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -26,7 +26,6 @@ class Chessboard(Widget):
             ypos = touch.pos[1]-self.pos[1]
             self.down_square = self.square_pos(xpos,ypos)
             self.reset_board()
-            print(self.down_square)
             ## Testing
 
     def on_touch_up(self, touch):
@@ -34,7 +33,14 @@ class Chessboard(Widget):
             xpos = touch.pos[0]-self.pos[0]
             ypos = touch.pos[1]-self.pos[1]
             up_square = self.square_pos(xpos,ypos)
+            if up_square == self.down_square and up_square[2] != "EMPTY":
+                self.show_moves(self.down_square)
             self.legal_move(self.down_square, up_square)
+
+    def show_moves(self, square):
+        piece = self.piece[square[2]]
+        if piece == "PAWN":
+            print("PAWN HIT")
 
     def reset_board(self):
         self.parent.w_pawn0.set(1,0)
@@ -71,11 +77,9 @@ class Chessboard(Widget):
         self.parent.b_pawn7.set(6,7)
         self.parent.b_pawn7.makeVisible()
 
-    def square_pos(self,x,y,flat=True):
+    def square_pos(self,x,y):
         square_size = self.width/8
-        if flat:
-            return (math.trunc(y/square_size)*8+math.trunc(x/square_size))
-        return (math.trunc(y/square_size),math.trunc(x/square_size))
+        return (math.trunc(y/square_size),math.trunc(x/square_size),math.trunc(y/square_size)*8+math.trunc(x/square_size))
 
     def legal_move(self, down, up):
         if up[0] != 0:
