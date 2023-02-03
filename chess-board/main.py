@@ -5,6 +5,8 @@ from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProper
 from kivy.vector import Vector
 from kivy.uix.image import Image
 from kivy.core.window import Window
+from kivy.graphics import Rectangle
+from kivy.uix.button import Button
 from kivy.lang.builder import Builder
 
 
@@ -19,6 +21,7 @@ class Chessboard(Widget):
         super().__init__(**kwargs)
         self.down_square = (0,0)
         self.names, self.color, self.piece = ["EMPTY"]*64, ["EMPTY"]*64, ["EMPTY"]*64
+        p_size = NumericProperty()
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -38,9 +41,13 @@ class Chessboard(Widget):
             self.legal_move(self.down_square, up_square)
 
     def show_moves(self, square):
+        c_size = 70
         forward = "WHITE"
         piece = self.piece[square[2]]
         color = self.color[square[2]]
+        print(c_size)
+        self.new_red = Image(source='chess-pieces/red-circle.png',size=(c_size,c_size))
+        self.add_widget(self.new_red)
         if piece == "PAWN":
             if color == forward:
                 if self.piece[square[2]+8] == "EMPTY":

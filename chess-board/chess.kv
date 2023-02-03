@@ -23,6 +23,8 @@
 
     s_width : win.Window.width
     s_height : win.Window.height
+    p_size: win.Window.width*.125
+
     Chessboard:
         id: main_board
         center: self.parent.center
@@ -70,8 +72,7 @@
             id: marker
 
 <Chessboard>:
-
-<Chessboard>:
+    p_size: self.parent.width*.125
     size : self.parent.s_height, self.parent.s_height
     #size : self.parent.s_width, self.parent.s_width
     canvas:
