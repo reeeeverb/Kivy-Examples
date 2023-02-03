@@ -38,9 +38,16 @@ class Chessboard(Widget):
             self.legal_move(self.down_square, up_square)
 
     def show_moves(self, square):
+        forward = "WHITE"
         piece = self.piece[square[2]]
+        color = self.color[square[2]]
         if piece == "PAWN":
-            print("PAWN HIT")
+            if color == forward:
+                if self.piece[square[2]+8] == "EMPTY":
+                    self.parent.marker.markSpace(square[0]+1,square[1])
+            else:
+                if self.piece[square[2]-8] == "EMPTY":
+                    self.parent.marker.markSpace(square[0]-1,square[1])
 
     def reset_board(self):
         self.parent.w_pawn0.set(1,0)
@@ -107,6 +114,16 @@ class Pawn(Widget):
             self.parent.color[row*8+col] = "WHITE" if self.white == 1 else "BLACK"
             self.parent.piece[row*8+col] = "PAWN"
     pass
+
+class Marker(Widget):
+    position_row = NumericProperty(0)
+    position_col = NumericProperty(0)
+    p_size = NumericProperty(0)
+    visible = 1
+
+    def markSpace(self, row, col):
+        self.position_row = row
+        self.position_col = col
 
 class ChessApp(App):
     def build(self):

@@ -19,6 +19,8 @@
     b_pawn6 : b_pawn6
     b_pawn7 : b_pawn7
 
+    marker: marker
+
     s_width : win.Window.width
     s_height : win.Window.height
     Chessboard:
@@ -64,6 +66,8 @@
         Pawn:
             id: b_pawn7
             white: 0
+        Marker:
+            id: marker
 
 <Chessboard>:
 
@@ -84,3 +88,11 @@
             size: self.p_size, self.p_size if self.visible == 1 else 0
             source: 'chess-pieces/white/pawn.png' if self.white == 1 else 'chess-pieces/black/pawn1.png'
     
+<Marker>:
+    p_size: self.parent.width*.125
+    canvas:
+        Rectangle: 
+            pos: self.position_col*.125*self.parent.width+self.parent.x, self.position_row*.125*self.parent.height+self.parent.y
+            size: self.p_size, self.p_size if self.visible == 1 else 0
+            source: 'chess-pieces/red-circle.png'
+            
