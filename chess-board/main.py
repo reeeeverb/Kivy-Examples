@@ -21,7 +21,7 @@ class Chessboard(Widget):
         super().__init__(**kwargs)
         self.down_square = (0,0)
         self.names, self.color, self.piece = ["EMPTY"]*64, ["EMPTY"]*64, ["EMPTY"]*64
-        p_size = NumericProperty()
+        p_size = ObjectProperty(0)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -29,6 +29,7 @@ class Chessboard(Widget):
             ypos = touch.pos[1]-self.pos[1]
             self.down_square = self.square_pos(xpos,ypos)
             self.reset_board()
+            print("size ", self.p_size)
             ## Testing
 
     def on_touch_up(self, touch):
@@ -41,12 +42,10 @@ class Chessboard(Widget):
             self.legal_move(self.down_square, up_square)
 
     def show_moves(self, square):
-        c_size = 70
         forward = "WHITE"
         piece = self.piece[square[2]]
         color = self.color[square[2]]
-        print(c_size)
-        self.new_red = Image(source='chess-pieces/red-circle.png',size=(c_size,c_size))
+        self.new_red = Image(source='chess-pieces/red-circle.png',size=(self.p_size,self.p_size))
         self.add_widget(self.new_red)
         if piece == "PAWN":
             if color == forward:
@@ -99,13 +98,12 @@ class Chessboard(Widget):
         if up[0] != 0:
             print(down, up)
 
-
 class Pawn(Widget):
     position_row = NumericProperty(0)
     position_col = NumericProperty(0)
     white = NumericProperty(1)
     visible = NumericProperty(0)
-    p_size = NumericProperty(0)
+    p_size = ObjectProperty(0)
 
     def makeVisible(self):
         self.visible = 1
@@ -137,5 +135,6 @@ class ChessApp(App):
         return ChessGame()
 
 if __name__ == '__main__':
+    g_size = 0
     ChessApp().run()
 
