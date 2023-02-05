@@ -20,14 +20,20 @@ class Chessboard(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.down_square = (0,0)
+        self.up_square = (0,0)
         self.names, self.color, self.piece = ["EMPTY"]*64, ["EMPTY"]*64, ["EMPTY"]*64
         p_size = ObjectProperty(0)
+        x = ObjectProperty()
+        y = ObjectProperty()
+        self.marker_present = False
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             xpos = touch.pos[0]-self.pos[0]
             ypos = touch.pos[1]-self.pos[1]
             self.down_square = self.square_pos(xpos,ypos)
+            if self.down_square != self.up_square:
+                self.clear_markers()
             self.reset_board()
             print("size ", self.p_size)
             ## Testing
@@ -36,24 +42,33 @@ class Chessboard(Widget):
         if self.collide_point(*touch.pos):
             xpos = touch.pos[0]-self.pos[0]
             ypos = touch.pos[1]-self.pos[1]
-            up_square = self.square_pos(xpos,ypos)
-            if up_square == self.down_square and up_square[2] != "EMPTY":
-                self.show_moves(self.down_square)
-            self.legal_move(self.down_square, up_square)
+            self.up_square = self.square_pos(xpos,ypos)
+            if self.up_square == self.down_square and self.up_square[2] != "EMPTY":
+                self.generate_moves(self.down_square)
+            self.legal_move(self.down_square, self.up_square)
 
-    def show_moves(self, square):
+    def clear_markers(self):
+        if self.marker_present:
+            self.remove_widget(self.new_red)
+            self.marker_present=False
+    def generate_moves(self,square):
         forward = "WHITE"
         piece = self.piece[square[2]]
         color = self.color[square[2]]
-        self.new_red = Image(source='chess-pieces/red-circle.png',size=(self.p_size,self.p_size))
-        self.add_widget(self.new_red)
         if piece == "PAWN":
             if color == forward:
                 if self.piece[square[2]+8] == "EMPTY":
-                    self.parent.marker.markSpace(square[0]+1,square[1])
+                    self.show_moves(square[0]+1,square[1])
             else:
                 if self.piece[square[2]-8] == "EMPTY":
                     self.parent.marker.markSpace(square[0]-1,square[1])
+
+    def show_moves(self, row, column):
+        #row = 1
+        #column = 6
+        self.new_red = Image(source='chess-pieces/red-circle.png',pos=(self.x+self.p_size*column,self.y+self.p_size*row),size=(self.p_size,self.p_size))
+        self.add_widget(self.new_red)
+        self.marker_present=True
 
     def reset_board(self):
         self.parent.w_pawn0.set(1,0)
