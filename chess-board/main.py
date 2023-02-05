@@ -26,6 +26,7 @@ class Chessboard(Widget):
         x = ObjectProperty()
         y = ObjectProperty()
         self.marker_present = False
+        self.widget_list = []
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -49,8 +50,13 @@ class Chessboard(Widget):
 
     def clear_markers(self):
         if self.marker_present:
-            self.remove_widget(self.new_red)
+            #self.remove_widget(self.new_red)
+            #self.remove_widget(self.new_red)
+            for widget in self.widget_list:
+                self.remove_widget(widget)
+            self.widget_list = []
             self.marker_present=False
+
     def generate_moves(self,square):
         forward = "WHITE"
         piece = self.piece[square[2]]
@@ -59,15 +65,28 @@ class Chessboard(Widget):
             if color == forward:
                 if self.piece[square[2]+8] == "EMPTY":
                     self.show_moves(square[0]+1,square[1])
+                    if self.piece[square[2]+16] == "EMPTY" and square[0] == 1:
+                        self.show_moves(square[0]+2,square[1])
+                if square[1] != 0 and self.piece[square[2]+7] == "EMPTY":
+                    self.show_moves(square[0]+1,square[1]-1)
+                if square[1] != 7 and self.piece[square[2]+9] == "EMPTY":
+                    self.show_moves(square[0]+1,square[1]+1)
             else:
                 if self.piece[square[2]-8] == "EMPTY":
-                    self.parent.marker.markSpace(square[0]-1,square[1])
+                    self.show_moves(square[0]-1,square[1])
+                    if self.piece[square[2]-16] == "EMPTY" and square[0] == 6:
+                        self.show_moves(square[0]-2,square[1])
+                if square[1] != 7 and self.piece[square[2]-7] == "EMPTY":
+                    self.show_moves(square[0]-1,square[1]+1)
+                if square[1] != 0 and self.piece[square[2]-9] == "EMPTY":
+                    self.show_moves(square[0]-1,square[1]-1)
 
     def show_moves(self, row, column):
         #row = 1
         #column = 6
         self.new_red = Image(source='chess-pieces/red-circle.png',pos=(self.x+self.p_size*column,self.y+self.p_size*row),size=(self.p_size,self.p_size))
         self.add_widget(self.new_red)
+        self.widget_list.append(self.new_red)
         self.marker_present=True
 
     def reset_board(self):
