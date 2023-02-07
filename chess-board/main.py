@@ -29,6 +29,8 @@ class Chessboard(Widget):
         self.widget_list = []
         self.current_move = "WHITE"
         self.first = True
+        self.white_capture = []
+        self.black_capture = []
 
     def on_touch_down(self, touch):
         if self.first:
@@ -48,7 +50,6 @@ class Chessboard(Widget):
             ypos = touch.pos[1]-self.pos[1]
             self.up_square = self.square_pos(xpos,ypos)
             if self.up_square == self.down_square and self.piece[self.up_square[2] != "EMPTY"]:
-                print("hit")
                 self.generate_moves(self.down_square,True)
             else:
                 self.clear_markers()
@@ -79,7 +80,7 @@ class Chessboard(Widget):
                         self.show_moves(square[0]+1,square[1])
                     else:
                         out.append(square[2]+8)
-                    if self.piece[square[2]+16] == "EMPTY" and square[0] == 1:
+                    if square[0] < 6 and self.piece[square[2]+16] == "EMPTY" and square[0] == 1:
                         if show_moves == True:
                             self.show_moves(square[0]+2,square[1])
                         else:
@@ -100,7 +101,7 @@ class Chessboard(Widget):
                         self.show_moves(square[0]-1,square[1])
                     else:
                         out.append(square[2]-8)
-                    if self.piece[square[2]-16] == "EMPTY" and square[0] == 6:
+                    if square[0] > 1 and self.piece[square[2]-16] == "EMPTY" and square[0] == 6:
                         if show_moves == True:
                             self.show_moves(square[0]-2,square[1])
                         else:
@@ -187,10 +188,15 @@ class Pawn(Widget):
     def makeVisible(self):
         self.visible = 1
         self.parent.color[self.position_row*8+self.position_col] = "WHITE" if self.white == 1 else "BLACK"
+
     def makeNotVisible(self):
         self.visible = 0
+        if self.parent.color[self.position_row*8+self.position_col] == "WHITE":
+            self.parent.black_capture.append(self.parent.names[self.position_row*8+self.position_col]) 
+        if self.parent.color[self.position_row*8+self.position_col] == "BLACK":
+            self.parent.white_capture.append(self.parent.names[self.position_row*8+self.position_col]) 
         self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
-        self.parent.piece[row*8+col] = "PAWN"
+        self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
 
     def set(self, row, col):
         self.parent.names[self.position_row*8+self.position_col] = "EMPTY"
@@ -199,6 +205,10 @@ class Pawn(Widget):
 
         self.position_col = col
         self.position_row = row
+
+        if (self.parent.piece[self.position_row*8+self.position_col]) != "EMPTY":
+            self.parent.names[self.position_row*8+self.position_col].makeNotVisible()
+
         self.parent.names[self.position_row*8+self.position_col] = self
         self.parent.piece[self.position_row*8+self.position_col] = "PAWN"
         self.parent.color[self.position_row*8+self.position_col] = "WHITE" if self.white else "BLACK"
