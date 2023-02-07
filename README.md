@@ -1,5 +1,6 @@
 # Kivy Examples
 
 ## Chessboard TODO:
-- pawn promotion and en passant(or however the fuck you spell that)
-- tracking for piece capture
+- Implement pawn promotion
+- Finally add some of the other pieces
+  - start with knights I think
