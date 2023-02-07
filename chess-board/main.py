@@ -71,7 +71,7 @@ class Chessboard(Widget):
         piece = self.piece[square[2]]
         color = self.color[square[2]]
         out = []
-        ## TO DO: Implement en passant
+        ## TO DO: Implement en passant and promotion
         if piece == "PAWN":
             if color == forward:
                 if self.piece[square[2]+8] == "EMPTY":
