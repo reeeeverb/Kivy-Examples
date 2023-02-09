@@ -179,6 +179,8 @@ class Chessboard(Widget):
                     self.show_moves(square[0]-1,square[1]+2)
                 else:
                     out.append(square[2]-6)
+        elif piece == "BISHOP":
+            self.show_moves(square[0],square[1])
 
         return out;
 
@@ -214,6 +216,11 @@ class Chessboard(Widget):
         self.parent.w_knight2.set(0,6)
         self.parent.w_knight2.makeVisible()
 
+        self.parent.w_bishop1.set(0,2)
+        self.parent.w_bishop1.makeVisible()
+        self.parent.w_bishop2.set(0,5)
+        self.parent.w_bishop2.makeVisible()
+
         self.parent.b_pawn0.set(6,0)
         self.parent.b_pawn0.makeVisible()
         self.parent.b_pawn1.set(6,1)
@@ -235,6 +242,11 @@ class Chessboard(Widget):
         self.parent.b_knight1.makeVisible()
         self.parent.b_knight2.set(7,6)
         self.parent.b_knight2.makeVisible()
+
+        self.parent.b_bishop1.set(7,2)
+        self.parent.b_bishop1.makeVisible()
+        self.parent.b_bishop2.set(7,5)
+        self.parent.b_bishop2.makeVisible()
 
     def square_pos(self,x,y):
         square_size = self.width/8
@@ -294,7 +306,7 @@ class Knight(Widget):
             self.parent.piece[row*8+col] = "KNIGHT"
     pass
 
-class Knight(Widget):
+class Bishop(Widget):
     position_row = NumericProperty(0)
     position_col = NumericProperty(0)
     white = NumericProperty(1)
@@ -328,11 +340,11 @@ class Knight(Widget):
         temp_pos = self.position_row*8+self.position_col
 
         self.parent.names[self.position_row*8+self.position_col] = self
-        self.parent.piece[self.position_row*8+self.position_col] = "KNIGHT"
+        self.parent.piece[self.position_row*8+self.position_col] = "BISHOP"
         self.parent.color[self.position_row*8+self.position_col] = "WHITE" if self.white else "BLACK"
         if self.visible == 1:
             self.parent.color[row*8+col] = "WHITE" if self.white == 1 else "BLACK"
-            self.parent.piece[row*8+col] = "KNIGHT"
+            self.parent.piece[row*8+col] = "BISHOP"
     pass
 
 class Pawn(Widget):
