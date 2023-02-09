@@ -8,6 +8,7 @@ from kivy.core.window import Window
 from kivy.graphics import Rectangle
 from kivy.uix.button import Button
 from kivy.lang.builder import Builder
+from watchpoints import watch
 
 
 class ChessGame(Widget):
@@ -32,6 +33,7 @@ class Chessboard(Widget):
         self.white_capture = []
         self.black_capture = []
         self.move = 0
+        watch(self.piece[0])
 
     def on_touch_down(self, touch):
         if self.first:
@@ -244,6 +246,9 @@ class Chessboard(Widget):
                 t_square1 += 1
                 t_square0 -= 1
                 t_tracker -= 7
+        elif piece == "ROOK":
+            print("rook")
+
 
 
         return out;
@@ -340,11 +345,12 @@ class Chessboard(Widget):
             self.current_move = "WHITE"
 
 class Knight(Widget):
-    position_row = NumericProperty(0)
-    position_col = NumericProperty(0)
+    position_row = NumericProperty(-1)
+    position_col = NumericProperty(-1)
     white = NumericProperty(1)
     visible = NumericProperty(0)
     p_size = NumericProperty(0)
+    first = True
 
     def makeVisible(self):
         self.visible = 1
@@ -360,9 +366,10 @@ class Knight(Widget):
         self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
 
     def set(self, row, col):
-        self.parent.names[self.position_row*8+self.position_col] = "EMPTY"
-        self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
-        self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
+        if not self.first:
+            self.parent.names[self.position_row*8+self.position_col] = "EMPTY"
+            self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
+            self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
 
         self.position_col = col
         self.position_row = row
@@ -375,17 +382,19 @@ class Knight(Widget):
         self.parent.names[self.position_row*8+self.position_col] = self
         self.parent.piece[self.position_row*8+self.position_col] = "KNIGHT"
         self.parent.color[self.position_row*8+self.position_col] = "WHITE" if self.white else "BLACK"
+        self.first = False
         if self.visible == 1:
             self.parent.color[row*8+col] = "WHITE" if self.white == 1 else "BLACK"
             self.parent.piece[row*8+col] = "KNIGHT"
     pass
 
 class Bishop(Widget):
-    position_row = NumericProperty(0)
-    position_col = NumericProperty(0)
+    position_row = NumericProperty(-1)
+    position_col = NumericProperty(-1)
     white = NumericProperty(1)
     visible = NumericProperty(0)
     p_size = NumericProperty(0)
+    first = True
 
     def makeVisible(self):
         self.visible = 1
@@ -401,10 +410,12 @@ class Bishop(Widget):
         self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
 
     def set(self, row, col):
-        self.parent.names[self.position_row*8+self.position_col] = "EMPTY"
-        self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
-        self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
+        if not self.first:
+            self.parent.names[self.position_row*8+self.position_col] = "EMPTY"
+            self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
+            self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
 
+        self.first = False
         self.position_col = col
         self.position_row = row
 
@@ -422,11 +433,12 @@ class Bishop(Widget):
     pass
 
 class Rook(Widget):
-    position_row = NumericProperty(0)
-    position_col = NumericProperty(0)
+    position_row = NumericProperty(-1)
+    position_col = NumericProperty(-1)
     white = NumericProperty(1)
     visible = NumericProperty(0)
     p_size = NumericProperty(0)
+    first = True
 
     def makeVisible(self):
         self.visible = 1
@@ -442,9 +454,10 @@ class Rook(Widget):
         self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
 
     def set(self, row, col):
-        self.parent.names[self.position_row*8+self.position_col] = "EMPTY"
-        self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
-        self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
+        if not self.first:
+            self.parent.names[self.position_row*8+self.position_col] = "EMPTY"
+            self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
+            self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
 
         self.position_col = col
         self.position_row = row
@@ -453,10 +466,12 @@ class Rook(Widget):
             self.parent.names[self.position_row*8+self.position_col].makeNotVisible()
         
         temp_pos = self.position_row*8+self.position_col
-
+        
         self.parent.names[self.position_row*8+self.position_col] = self
         self.parent.piece[self.position_row*8+self.position_col] = "ROOK"
         self.parent.color[self.position_row*8+self.position_col] = "WHITE" if self.white else "BLACK"
+
+        self.first = False
         if self.visible == 1:
             self.parent.color[row*8+col] = "WHITE" if self.white == 1 else "BLACK"
             self.parent.piece[row*8+col] = "ROOK"
@@ -470,6 +485,7 @@ class Pawn(Widget):
     p_size = ObjectProperty(0)
     en_passantable = ObjectProperty(False)
     en_passantable_move = -1
+    first = True
 
     def makeVisible(self):
         self.visible = 1
@@ -485,9 +501,10 @@ class Pawn(Widget):
         self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
 
     def set(self, row, col):
-        self.parent.names[self.position_row*8+self.position_col] = "EMPTY"
-        self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
-        self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
+        if not self.first:
+            self.parent.names[self.position_row*8+self.position_col] = "EMPTY"
+            self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
+            self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
 
         if abs(self.position_row - row) == 2:
             self.en_passantable = True
@@ -506,10 +523,12 @@ class Pawn(Widget):
             self.parent.names[temp_pos-8].makeNotVisible()
         if (self.parent.piece[temp_pos+8] == "PAWN" and self.parent.names[temp_pos+8].en_passantable_move == self.parent.move):
             self.parent.names[temp_pos+8].makeNotVisible()
-
         self.parent.names[self.position_row*8+self.position_col] = self
+        
         self.parent.piece[self.position_row*8+self.position_col] = "PAWN"
         self.parent.color[self.position_row*8+self.position_col] = "WHITE" if self.white else "BLACK"
+
+        self.first = False
         if self.visible == 1:
             self.parent.color[row*8+col] = "WHITE" if self.white == 1 else "BLACK"
             self.parent.piece[row*8+col] = "PAWN"
