@@ -31,6 +31,12 @@
     b_bishop1 : b_bishop1
     b_bishop2 : b_bishop2
 
+    w_rook1 : w_rook1
+    w_rook2 : w_rook2
+
+    b_rook1 : b_rook1
+    b_rook2 : b_rook2
+
     s_width : win.Window.width
     s_height : win.Window.height
     p_size: win.Window.width*.125
@@ -83,7 +89,6 @@
             id: w_knight1
         Knight:
             id: w_knight2
-
         Knight:
             id: b_knight1
             white: 0
@@ -95,7 +100,6 @@
             id: w_bishop1
         Bishop:
             id: w_bishop2
-
         Bishop:
             id: b_bishop1
             white: 0
@@ -103,6 +107,16 @@
             id: b_bishop2
             white: 0
 
+        Rook:
+            id: w_rook1
+        Rook:
+            id: w_rook2
+        Rook:
+            id: b_rook1
+            white: 0
+        Rook:
+            id: b_rook2
+            white: 0
 <Chessboard>:
     p_size: self.width*.125
     size : self.parent.s_height, self.parent.s_height
@@ -136,6 +150,14 @@
             pos: self.position_col*.125*self.parent.width+self.parent.x, self.position_row*.125*self.parent.height+self.parent.y
             size: self.p_size, self.p_size if self.visible == 1 else 0
             source: 'chess-pieces/white/bishop1.png' if self.white == 1 else 'chess-pieces/black/bishop1.png'
+
+<Rook>:
+    p_size : self.parent.width*.125
+    canvas:
+        Rectangle:
+            pos: self.position_col*.125*self.parent.width+self.parent.x, self.position_row*.125*self.parent.height+self.parent.y
+            size: self.p_size, self.p_size if self.visible == 1 else 0
+            source: 'chess-pieces/white/rook1.png' if self.white == 1 else 'chess-pieces/black/rook1.png'
 
 <Marker>:
     p_size: self.parent.width*.125
