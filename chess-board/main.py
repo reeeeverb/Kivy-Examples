@@ -180,7 +180,71 @@ class Chessboard(Widget):
                 else:
                     out.append(square[2]-6)
         elif piece == "BISHOP":
-            self.show_moves(square[0],square[1])
+            t_square1 = square[1]-1
+            t_square0 = square[0]-1
+            t_tracker = square[2]-9
+            dont_stop = True
+            while t_square1 >= 0 and t_square0 >= 0 and dont_stop:
+                if self.color[t_tracker] == color:
+                    break
+                elif self.color[t_tracker] != color and self.color[t_tracker] != "EMPTY":
+                    dont_stop = False
+                if show_moves == True:
+                    self.show_moves(t_square0,t_square1)
+                else:
+                    out.append(t_tracker)
+                t_square1 -= 1
+                t_square0 -= 1
+                t_tracker -= 9
+            t_square1 = square[1]+1
+            t_square0 = square[0]+1
+            t_tracker = square[2]+9
+            dont_stop = True
+            while t_square1 <= 7 and t_square0 <= 7 and dont_stop:
+                if self.color[t_tracker] == color:
+                    break
+                elif self.color[t_tracker] != color and self.color[t_tracker] != "EMPTY":
+                    dont_stop = False
+                if show_moves == True:
+                    self.show_moves(t_square0,t_square1)
+                else:
+                    out.append(t_tracker)
+                t_square1 += 1
+                t_square0 += 1
+                t_tracker += 9
+            t_square1 = square[1]-1
+            t_square0 = square[0]+1
+            t_tracker = square[2]+7
+            dont_stop = True
+            while t_square1 >= 0 and t_square0 <= 7 and dont_stop:
+                if self.color[t_tracker] == color:
+                    break
+                elif self.color[t_tracker] != color and self.color[t_tracker] != "EMPTY":
+                    dont_stop = False
+                if show_moves == True:
+                    self.show_moves(t_square0,t_square1)
+                else:
+                    out.append(t_tracker)
+                t_square1 -= 1
+                t_square0 += 1
+                t_tracker += 7
+            t_square1 = square[1]+1
+            t_square0 = square[0]-1
+            t_tracker = square[2]-7
+            dont_stop = True
+            while t_square1 <= 7 and t_square0 >= 0 and dont_stop:
+                if self.color[t_tracker] == color:
+                    break
+                elif self.color[t_tracker] != color and self.color[t_tracker] != "EMPTY":
+                    dont_stop = False
+                if show_moves == True:
+                    self.show_moves(t_square0,t_square1)
+                else:
+                    out.append(t_tracker)
+                t_square1 += 1
+                t_square0 -= 1
+                t_tracker -= 7
+
 
         return out;
 
