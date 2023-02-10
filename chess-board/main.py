@@ -306,6 +306,48 @@ class Chessboard(Widget):
                     out.append(t_tracker)
                 t_square0 += 1
                 t_tracker += 8
+        if piece == "KING":
+            print(color)
+            if square[1] < 7 and self.color[square[2]+1] != color:
+                if show_moves:
+                    self.show_moves(square[0],square[1]+1)
+                else:
+                    out.append(square[2]+1)
+            if square[1] > 0 and self.color[square[2]-1] != color:
+                if show_moves:
+                    self.show_moves(square[0],square[1]-1)
+                else:
+                    out.append(square[2]-1)
+            if square[0] < 7 and square[1] > 0 and self.color[square[2]+7] != color:
+                if show_moves:
+                    self.show_moves(square[0]+1,square[1]-1)
+                else:
+                    out.append(square[2]+7)
+            if square[0] < 7 and self.color[square[2]+8] != color:
+                if show_moves:
+                    self.show_moves(square[0]+1,square[1])
+                else:
+                    out.append(square[2]+8)
+            if square[0] < 7 and square[1] < 7 and self.color[square[2]+9] != color:
+                if show_moves:
+                    self.show_moves(square[0]+1,square[1]+1)
+                else:
+                    out.append(square[2]+9)
+            if square[0] > 0 and square[1] < 7 and self.color[square[2]-7] != color:
+                if show_moves:
+                    self.show_moves(square[0]-1,square[1]+1)
+                else:
+                    out.append(square[2]-7)
+            if square[0] > 0 and self.color[square[2]-8] != color:
+                if show_moves:
+                    self.show_moves(square[0]-1,square[1])
+                else:
+                    out.append(square[2]-8)
+            if square[0] > 0 and square[1] > 0 and self.color[square[2]-9] != color:
+                if show_moves:
+                    self.show_moves(square[0]-1,square[1]-1)
+                else:
+                    out.append(square[2]-9)
 
         return out;
 
