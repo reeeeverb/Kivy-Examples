@@ -8,7 +8,7 @@ from kivy.core.window import Window
 from kivy.graphics import Rectangle
 from kivy.uix.button import Button
 from kivy.lang.builder import Builder
-from watchpoints import watch
+#from watchpoints import watch
 
 
 class ChessGame(Widget):
@@ -33,7 +33,6 @@ class Chessboard(Widget):
         self.white_capture = []
         self.black_capture = []
         self.move = 0
-        watch(self.piece[0])
 
     def on_touch_down(self, touch):
         if self.first:
@@ -247,7 +246,66 @@ class Chessboard(Widget):
                 t_square0 -= 1
                 t_tracker -= 7
         elif piece == "ROOK":
-            print("rook")
+            t_square1 = square[1]-1
+            t_square0 = square[0]
+            t_tracker = square[2]-1
+            dont_stop = True
+            while t_square1 >= 0 and t_square0 >= 0 and dont_stop:
+                if self.color[t_tracker] == color:
+                    break
+                elif self.color[t_tracker] != color and self.color[t_tracker] != "EMPTY":
+                    dont_stop = False
+                if show_moves == True:
+                    self.show_moves(t_square0,t_square1)
+                else:
+                    out.append(t_tracker)
+                t_square1 -= 1
+                t_tracker -= 1
+            t_square1 = square[1]+1
+            t_square0 = square[0]
+            t_tracker = square[2]+1
+            dont_stop = True
+            while t_square1 <= 7 and t_square0 <= 7 and dont_stop:
+                if self.color[t_tracker] == color:
+                    break
+                elif self.color[t_tracker] != color and self.color[t_tracker] != "EMPTY":
+                    dont_stop = False
+                if show_moves == True:
+                    self.show_moves(t_square0,t_square1)
+                else:
+                    out.append(t_tracker)
+                t_square1 += 1
+                t_tracker += 1
+            t_square1 = square[1]
+            t_square0 = square[0]-1
+            t_tracker = square[2]-8
+            dont_stop = True
+            while t_square1 >= 0 and t_square0 >= 0 and dont_stop:
+                if self.color[t_tracker] == color:
+                    break
+                elif self.color[t_tracker] != color and self.color[t_tracker] != "EMPTY":
+                    dont_stop = False
+                if show_moves == True:
+                    self.show_moves(t_square0,t_square1)
+                else:
+                    out.append(t_tracker)
+                t_square0 -= 1
+                t_tracker -= 8
+            t_square1 = square[1]
+            t_square0 = square[0]+1
+            t_tracker = square[2]+8
+            dont_stop = True
+            while t_square1 <= 7 and t_square0 <= 7 and dont_stop:
+                if self.color[t_tracker] == color:
+                    break
+                elif self.color[t_tracker] != color and self.color[t_tracker] != "EMPTY":
+                    dont_stop = False
+                if show_moves == True:
+                    self.show_moves(t_square0,t_square1)
+                else:
+                    out.append(t_tracker)
+                t_square0 += 1
+                t_tracker += 8
 
 
 

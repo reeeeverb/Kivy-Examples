@@ -117,6 +117,12 @@
         Rook:
             id: b_rook2
             white: 0
+
+        Queen:
+            id: w_queen1
+        Queen:
+            id: b_queen1
+            white: 0
 <Chessboard>:
     p_size: self.width*.125
     size : self.parent.s_height, self.parent.s_height
@@ -158,6 +164,14 @@
             pos: self.position_col*.125*self.parent.width+self.parent.x, self.position_row*.125*self.parent.height+self.parent.y
             size: self.p_size, self.p_size if self.visible == 1 else 0
             source: 'chess-pieces/white/rook1.png' if self.white == 1 else 'chess-pieces/black/rook1.png'
+
+<Queen>:
+    p_size : self.parent.width*.125
+    canvas:
+        Rectangle:
+            pos: self.position_col*.125*self.parent.width+self.parent.x, self.position_row*.125*self.parent.height+self.parent.y
+            size: self.p_size, self.p_size if self.visible == 1 else 0
+            source: 'chess-pieces/white/quuen1.png' if self.white == 1 else 'chess-pieces/black/queen1.png'
 
 <Marker>:
     p_size: self.parent.width*.125
