@@ -37,6 +37,10 @@
     b_rook1 : b_rook1
     b_rook2 : b_rook2
 
+    w_queen1 : w_queen1
+
+    b_queen1 : b_queen1
+
     s_width : win.Window.width
     s_height : win.Window.height
     p_size: win.Window.width*.125
@@ -171,7 +175,7 @@
         Rectangle:
             pos: self.position_col*.125*self.parent.width+self.parent.x, self.position_row*.125*self.parent.height+self.parent.y
             size: self.p_size, self.p_size if self.visible == 1 else 0
-            source: 'chess-pieces/white/quuen1.png' if self.white == 1 else 'chess-pieces/black/queen1.png'
+            source: 'chess-pieces/white/queen1.png' if self.white == 1 else 'chess-pieces/black/queen1.png'
 
 <Marker>:
     p_size: self.parent.width*.125
