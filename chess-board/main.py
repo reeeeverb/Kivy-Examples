@@ -180,7 +180,7 @@ class Chessboard(Widget):
                     self.show_moves(square[0]-1,square[1]+2)
                 else:
                     out.append(square[2]-6)
-        elif piece == "BISHOP":
+        if piece == "BISHOP" or "QUEEN":
             t_square1 = square[1]-1
             t_square0 = square[0]-1
             t_tracker = square[2]-9
@@ -245,7 +245,7 @@ class Chessboard(Widget):
                 t_square1 += 1
                 t_square0 -= 1
                 t_tracker -= 7
-        elif piece == "ROOK":
+        if piece == "ROOK" or "QUEEN":
             t_square1 = square[1]-1
             t_square0 = square[0]
             t_tracker = square[2]-1
@@ -306,8 +306,6 @@ class Chessboard(Widget):
                     out.append(t_tracker)
                 t_square0 += 1
                 t_tracker += 8
-
-
 
         return out;
 
