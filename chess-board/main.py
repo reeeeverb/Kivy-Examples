@@ -354,6 +354,9 @@ class Chessboard(Widget):
         self.parent.w_queen1.set(0,4)
         self.parent.w_queen1.makeVisible()
 
+        self.parent.w_king1.set(0,3)
+        self.parent.w_king1.makeVisible()
+
         self.parent.b_pawn0.set(6,0)
         self.parent.b_pawn0.makeVisible()
         self.parent.b_pawn1.set(6,1)
@@ -388,6 +391,9 @@ class Chessboard(Widget):
 
         self.parent.b_queen1.set(7,4)
         self.parent.b_queen1.makeVisible()
+
+        self.parent.b_king1.set(7,3)
+        self.parent.b_king1.makeVisible()
 
     def square_pos(self,x,y):
         square_size = self.width/8
@@ -582,6 +588,51 @@ class Queen(Widget):
         if self.visible == 1:
             self.parent.color[row*8+col] = "WHITE" if self.white == 1 else "BLACK"
             self.parent.piece[row*8+col] = "QUEEN"
+    pass
+
+class King(Widget):
+    position_row = NumericProperty(-1)
+    position_col = NumericProperty(-1)
+    white = NumericProperty(1)
+    visible = NumericProperty(0)
+    p_size = NumericProperty(0)
+    first = True
+
+    def makeVisible(self):
+        self.visible = 1
+        self.parent.color[self.position_row*8+self.position_col] = "WHITE" if self.white == 1 else "BLACK"
+    
+    def makeNotVisible(self):
+        self.visible = 0
+        if self.parent.color[self.position_row*8+self.position_col] == "WHITE":
+            self.parent.black_capture.append(self.parent.names[self.position_row*8+self.position_col]) 
+        if self.parent.color[self.position_row*8+self.position_col] == "BLACK":
+            self.parent.white_capture.append(self.parent.names[self.position_row*8+self.position_col]) 
+        self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
+        self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
+
+    def set(self, row, col):
+        if not self.first:
+            self.parent.names[self.position_row*8+self.position_col] = "EMPTY"
+            self.parent.piece[self.position_row*8+self.position_col] = "EMPTY"
+            self.parent.color[self.position_row*8+self.position_col] = "EMPTY"
+
+        self.position_col = col
+        self.position_row = row
+
+        if (self.parent.piece[self.position_row*8+self.position_col]) != "EMPTY":
+            self.parent.names[self.position_row*8+self.position_col].makeNotVisible()
+        
+        temp_pos = self.position_row*8+self.position_col
+        
+        self.parent.names[self.position_row*8+self.position_col] = self
+        self.parent.piece[self.position_row*8+self.position_col] = "KING"
+        self.parent.color[self.position_row*8+self.position_col] = "WHITE" if self.white else "BLACK"
+
+        self.first = False
+        if self.visible == 1:
+            self.parent.color[row*8+col] = "WHITE" if self.white == 1 else "BLACK"
+            self.parent.piece[row*8+col] = "KING"
     pass
 
 class Pawn(Widget):
